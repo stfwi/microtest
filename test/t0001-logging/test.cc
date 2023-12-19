@@ -13,24 +13,25 @@ using namespace std;
 
 // Guard to prevent stream overrides (which is normally not done)
 // falling out of scope.
-struct teststream_restore {
+struct teststream_restore
+{
   teststream_restore() noexcept = default;
+
   ~teststream_restore() noexcept { ::sw::utest::test::stream(std::cout); }
 };
-
 
 void test(const vector<string>& args)
 {
   using namespace sw::utest;
-  (void) args;
+  (void)args;
   auto testenv_fails = std::string();
 
   const auto stripped = [](std::string&& s) {
-    s.erase(std::remove_if(s.begin(), s.end(), [](char c){ return c<' '; }), s.end());
+    s.erase(std::remove_if(s.begin(), s.end(), [](char c) { return c < ' '; }), s.end());
     return s;
   };
 
-  const auto text_check_noansi = [&]()->void{
+  const auto text_check_noansi = [&]() -> void {
     const auto was_ansi = test::ansi_colors();
     const auto restore = teststream_restore();
     auto os = std::stringstream();
@@ -51,7 +52,10 @@ void test(const vector<string>& args)
 
     const auto s = stripped(os.str());
     test_info("text_check_noansi: ", s);
-    test_expect(s == "[warn] [@FILENAME:1] warning-message[pass] [@FILENAME:2] pass-message[fail] [@FILENAME:3] fail-message[FAIL] 2 of 4 checks failed, 1 warnings.");
+    test_expect(
+      s
+      == "[warn] [@FILENAME:1] warning-message[pass] [@FILENAME:2] pass-message[fail] [@FILENAME:3] fail-message[FAIL] "
+         "2 of 4 checks failed, 1 warnings.");
     test_expect(exit_code > 0);
     test_expect(num_pass == 2);
     test_expect(num_fail == 2);
@@ -60,7 +64,7 @@ void test(const vector<string>& args)
     test::reset();
   };
 
-  const auto text_check_ansi = [&]()->void{
+  const auto text_check_ansi = [&]() -> void {
     const auto was_ansi = test::ansi_colors();
     const auto restore = teststream_restore();
     auto os = std::stringstream();
@@ -75,12 +79,15 @@ void test(const vector<string>& args)
 
     const auto s = stripped(os.str());
     test_info("text_check_ansi: ", s);
-    test_expect(s == "[0;33m[warn][0m [0;36m[@FILE:1][0m warn-msg[0m[0;32m[pass][0m [0;36m[@FILE:2][0m pass-msg[0m[0;31m[fail][0m [0;36m[@FILE:3][0m fail-msg[0m");
+    test_expect(
+      s
+      == "[0;33m[warn][0m [0;36m[@FILE:1][0m warn-msg[0m[0;32m[pass][0m [0;36m[@FILE:2][0m pass-msg[0m[0;31m[fail][0m "
+         "[0;36m[@FILE:3][0m fail-msg[0m");
     if(test::num_fails() > 0) { testenv_fails += "text_check_ansi failed. "; }
     test::reset();
   };
 
-  const auto text_check_omit_combined = [&]()->void{
+  const auto text_check_omit_combined = [&]() -> void {
     const auto was_ansi = test::ansi_colors();
     const auto was_omit = test::omit_pass_log();
     const auto restore = teststream_restore();
@@ -119,13 +126,13 @@ void test(const vector<string>& args)
 
     const auto s = stripped(os.str());
     test_info("text_check_omit_combined: ", s);
-    test_expect(s == "[warn] [@F:1] W[fail] [@F:3] F"); // <- no [pass] shall occur, but the others
-    test_expect( num_unlogged_passes == 6 );
+    test_expect(s == "[warn] [@F:1] W[fail] [@F:3] F");  // <- no [pass] shall occur, but the others
+    test_expect(num_unlogged_passes == 6);
     if(test::num_fails() > 0) { testenv_fails += "text_check_omit_combined failed. "; }
     test::reset();
   };
 
-  const auto text_check_summary_allpass = [&]()->void{
+  const auto text_check_summary_allpass = [&]() -> void {
     const auto was_ansi = test::ansi_colors();
     const auto was_omit = test::omit_pass_log();
     const auto restore = teststream_restore();
@@ -144,7 +151,7 @@ void test(const vector<string>& args)
     test::reset();
   };
 
-  const auto text_check_summary_pass_warnings = [&]()->void{
+  const auto text_check_summary_pass_warnings = [&]() -> void {
     const auto was_ansi = test::ansi_colors();
     const auto was_omit = test::omit_pass_log();
     const auto restore = teststream_restore();
@@ -164,7 +171,7 @@ void test(const vector<string>& args)
     test::reset();
   };
 
-  const auto text_check_summary_no_checks = [&]()->void{
+  const auto text_check_summary_no_checks = [&]() -> void {
     const auto was_ansi = test::ansi_colors();
     const auto restore = teststream_restore();
     auto os = std::stringstream();
@@ -189,5 +196,5 @@ void test(const vector<string>& args)
   text_check_summary_no_checks();
   test_info("---------------------------------------------");
   test_info("Check fails: ", testenv_fails);
-  test_expect( testenv_fails.empty() );
+  test_expect(testenv_fails.empty());
 }

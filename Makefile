@@ -82,5 +82,6 @@ help:
 
 
 include test/testenv.mk
+include test/sanitize.mk
 
 #--

@@ -28,3 +28,4 @@
 *.ok
 .svn
 /build
+/tmp

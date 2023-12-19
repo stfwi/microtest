@@ -9,13 +9,12 @@
 # Linux/BSD: no action needed).
 #---------------------------------------------------------------------------------------------------
 MAKEFLAGS+= --no-print-directory
-MICROTEST_ROOT=./include
+MICROTEST_ROOT=./test/microtest/include
 
 # Test selection
 wildcardr=$(foreach d,$(wildcard $1*),$(call wildcardr,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 TEST_SELECTION:=$(sort $(wildcard test/*$(TEST)*/))
-TEST_SCRIPT_ARGS=
 TEST_BINARIES_SOURCES:=$(foreach F, $(filter test/%/ , $(TEST_SELECTION)), $Ftest.cc)
 TEST_BINARIES:=$(patsubst %.cc,$(BUILDDIR)/%$(BINARY_EXTENSION),$(TEST_BINARIES_SOURCES))
 TEST_BINARIES_RESULTS:=$(patsubst %.cc,$(BUILDDIR)/%.log,$(TEST_BINARIES_SOURCES))
@@ -23,7 +22,6 @@ TEST_BINARIES_RESULTS:=$(patsubst %.cc,$(BUILDDIR)/%.log,$(TEST_BINARIES_SOURCES
 # g++ pedantic test run options.
 ifneq (,$(findstring g++,$(CXX)))
  # (Careful with formatting of this makefile, there are no tabs these blocks, indentation is with spaces)
- DUKOPTS+=-Wno-deprecated
  ifeq ($(WITH_SANITIZERS),1)
   TESTOPTS+=-g -ggdb -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined
   FLAGSLD+=-static-libstdc++ -static-libasan
@@ -35,7 +33,6 @@ endif
 
 # clang++ pedantic test run options
 ifneq (,$(findstring clang++,$(CXX)))
- DUKOPTS+=-Wno-deprecated
  ifeq ($(WITH_SANITIZERS),1)
   TESTOPTS+=-g -fsanitize=address -fsanitize=memory -fsanitize=memory-track-origins -fsanitize=thread
  endif
@@ -45,6 +42,7 @@ endif
 # Tests
 #---------------------------------------------------------------------------------------------------
 .PHONY: test test-clean test-results
+.PRECIOUS: %.log %.elf %.exe
 
 # test-clean only removes the test build and result directory,
 # so that other files in the build directory are not affected.
@@ -60,9 +58,11 @@ test: $(TEST_BINARIES_SOURCES)
 	@rm -f $(TEST_BINARIES_RESULTS)
  endif
 	@$(MAKE) -j -k test-results | tee $(BUILDDIR)/test/summary.log 2>&1
-	@if grep -e '^\[fail\]' -- $(BUILDDIR)/test/summary.log >/dev/null 2>&1; then echo "[FAIL] At least one test failed."; /bin/false; else echo "[PASS] All tests passed."; fi
- ifneq ($(TEST),)
+	@if grep -e '^\[fail\]' -- $(BUILDDIR)/test/summary.log >/dev/null 2>&1; then echo "[FAIL] Total verdict: At least one test failed."; /bin/false; else echo "[PASS] Total verdict: All tests passed."; fi
+ ifneq ($(TEST)$(PRINT_RESULTS),)
   ifneq ($(TEST_BINARIES_RESULTS),)
+	-@echo "[----] Test detail listing:"
+	-@echo "[----] --------------------------------------------------"
 	-@cat $(TEST_BINARIES_RESULTS) 2>/dev/null
   endif
  endif
