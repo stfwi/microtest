@@ -161,8 +161,8 @@
 // Warnings reviewed, no issues. The test harness has intentionally mutable global variables, the magic numbers are
 // not really magic, macros are still needed for the file/line information of the test_** functions, C-arrays for
 // compat down to c++11, pointer arithmetic false positive when handling `argv[i]` and `envv[i]`, same with array
-// index warning: no-lint is:
-// NOLINTBEGIN(*-global-variables, *-magic-numbers, *-macro-usage, *-avoid-c-arrays, *-pointer-arithmetic, *-pro-bounds-constant-array-index)
+// index warning. Array-to-pointer-decay is a FP when using normal std::forward. no-lint is:
+// NOLINTBEGIN(*-global-variables, *-magic-numbers, *-macro-usage, *-avoid-c-arrays, *-pointer-arithmetic, *-pro-bounds-constant-array-index, *-to-pointer-decay)
 #ifndef SW_MICROTEST_HH
 #define SW_MICROTEST_HH
 
@@ -570,7 +570,7 @@ namespace sw { namespace utest {
   static inline std::string to_string(const FloatingPoint val, size_t precision_digits)
   {
     auto ss = std::stringstream(); // --> std::format(). For compat still iostream.
-    ss.precision(precision_digits);
+    ss.precision(std::streamsize(precision_digits));
     ss << val;
     return ss.str();
   }
@@ -1144,7 +1144,8 @@ namespace sw { namespace utest {
       { rnd(r, 0, max); }
 
       /**
-       * Random for floating point types, uniform distribution, single value request.
+       * Random for floating point types, uniform distribution, single
+       * value request. Values between 0 and 1
        * @param T& r
        */
       template <typename R>
@@ -1156,7 +1157,8 @@ namespace sw { namespace utest {
       { rnd(r, 0, 1); }
 
       /**
-       * Random for integral types, uniform distribution, min to max, single value request.
+       * Random for integral types, uniform distribution, min to max (max inclusive
+       * interval [min,max]), single value request.
        * @param T& r
        * @param T min
        * @param T max
@@ -1589,6 +1591,6 @@ namespace sw { namespace utest {
   }}
 #endif
 
-// NOLINTEND(*-global-variables, *-magic-numbers, *-macro-usage, *-avoid-c-arrays, *-pointer-arithmetic, *-pro-bounds-constant-array-index)
+// NOLINTEND(*-global-variables, *-magic-numbers, *-macro-usage, *-avoid-c-arrays, *-pointer-arithmetic, *-pro-bounds-constant-array-index, *-to-pointer-decay)
 // clang-format on
 #endif
