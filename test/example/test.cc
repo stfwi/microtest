@@ -18,7 +18,7 @@ using namespace std;
 // Auxiliary function that throws a runtime error
 bool throws_exception(bool e)
 {
-  if(e) throw std::runtime_error("Bad something");
+  if(e) { throw std::runtime_error("Bad something"); }
   return false;
 }
 
@@ -28,7 +28,7 @@ bool throws_exception(bool e)
 template<typename ContainerType>
 string to_string(ContainerType c)
 {
-  if(c.empty()) return "[]";
+  if(c.empty()) { return "[]"; }
   stringstream s;
   auto it = c.begin();
   s << "[ " << *it;

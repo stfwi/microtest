@@ -33,7 +33,7 @@ template<typename C, typename T2, typename T3>
 bool all_in_range(const C& c, T2 min, T3 max)
 {
   for(const auto v: c) {
-    if(!in_range(v, min, max)) return false;
+    if(!in_range(v, min, max)) { return false; }
   }
   return true;
 }
@@ -94,138 +94,140 @@ void test(const vector<string>& args)
   }
 
   // random()
-  {{test_info("Random number generation: Type compat checks ...");
-  test_expect_noexcept((void)test_random<char>());
-  test_expect_noexcept((void)test_random<short>());
-  test_expect_noexcept((void)test_random<int>());
-  test_expect_noexcept((void)test_random<long>());
-  test_expect_noexcept((void)test_random<long long>());
-  test_expect_noexcept((void)test_random<float>());
-  test_expect_noexcept((void)test_random<double>());
-  test_expect_noexcept((void)test_random<long double>());
-  test_expect_noexcept((void)test_random<unsigned char>());
-  test_expect_noexcept((void)test_random<unsigned short>());
-  test_expect_noexcept((void)test_random<unsigned int>());
-  test_expect_noexcept((void)test_random<unsigned long>());
-  test_expect_noexcept((void)test_random<unsigned long long>());
-}
+  {
+    {
+      test_info("Random number generation: Type compat checks ...");
+      test_expect_noexcept((void)test_random<char>());
+      test_expect_noexcept((void)test_random<short>());
+      test_expect_noexcept((void)test_random<int>());
+      test_expect_noexcept((void)test_random<long>());
+      test_expect_noexcept((void)test_random<long long>());
+      test_expect_noexcept((void)test_random<float>());
+      test_expect_noexcept((void)test_random<double>());
+      test_expect_noexcept((void)test_random<long double>());
+      test_expect_noexcept((void)test_random<unsigned char>());
+      test_expect_noexcept((void)test_random<unsigned short>());
+      test_expect_noexcept((void)test_random<unsigned int>());
+      test_expect_noexcept((void)test_random<unsigned long>());
+      test_expect_noexcept((void)test_random<unsigned long long>());
+    }
 
-{
-  test_info("Random number generation: 0..max type compat checks ...");
-  constexpr auto max = 10;
-  test_expect(in_range(test_random<char>(max), 0, max));
-  test_expect(in_range(test_random<short>(max), 0, max));
-  test_expect(in_range(test_random<int>(max), 0, max));
-  test_expect(in_range(test_random<long>(max), 0, max));
-  test_expect(in_range(test_random<long long>(max), 0, max));
-  test_expect(in_range(test_random<float>(max), 0, max));
-  test_expect(in_range(test_random<double>(max), 0, max));
-  test_expect(in_range(test_random<long double>(max), 0, max));
-  test_expect(in_range(test_random<unsigned char>(max), 0, max));
-  test_expect(in_range(test_random<unsigned short>(max), 0, max));
-  test_expect(in_range(test_random<unsigned int>(max), 0, max));
-  test_expect(in_range(test_random<unsigned long>(max), 0, max));
-  test_expect(in_range(test_random<unsigned long long>(max), 0, max));
-}
-{
-  test_info("Random number generation: min..max type compat checks ...");
-  constexpr auto min = 5;
-  constexpr auto max = 10;
-  test_expect(in_range(test_random<char>(min, max), min, max));
-  test_expect(in_range(test_random<short>(min, max), min, max));
-  test_expect(in_range(test_random<int>(min, max), min, max));
-  test_expect(in_range(test_random<long>(min, max), min, max));
-  test_expect(in_range(test_random<long long>(min, max), min, max));
-  test_expect(in_range(test_random<float>(min, max), min, max));
-  test_expect(in_range(test_random<double>(min, max), min, max));
-  test_expect(in_range(test_random<long double>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned char>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned short>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned int>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned long>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned long long>(min, max), min, max));
-}
-{
-  test_info("Random number generation: min..max type compat checks ...");
-  constexpr auto min = 5;
-  constexpr auto max = 10;
-  test_expect(in_range(test_random<char>(min, max), min, max));
-  test_expect(in_range(test_random<short>(min, max), min, max));
-  test_expect(in_range(test_random<int>(min, max), min, max));
-  test_expect(in_range(test_random<long>(min, max), min, max));
-  test_expect(in_range(test_random<long long>(min, max), min, max));
-  test_expect(in_range(test_random<float>(min, max), min, max));
-  test_expect(in_range(test_random<double>(min, max), min, max));
-  test_expect(in_range(test_random<long double>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned char>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned short>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned int>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned long>(min, max), min, max));
-  test_expect(in_range(test_random<unsigned long long>(min, max), min, max));
-}
-{
-  test_info("Random number generation: Container min..max type compat checks ...");
-  constexpr size_t n = 20;
-  constexpr auto min = 5;
-  constexpr auto max = 10;
-  test_expect(all_in_range(test_random<vector<char>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<short>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<int>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<long>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<long long>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<float>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<double>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<long double>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<unsigned char>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<unsigned short>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<unsigned int>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<unsigned long>>(n, min, max), min, max));
-  test_expect(all_in_range(test_random<vector<unsigned long long>>(n, min, max), min, max));
-}
-{
-  test_info("Random number generation: Container min<type>..min<type> compat checks ...");
-  constexpr size_t n = 20;
-  test_expect_noexcept((void)test_random<vector<char>>(n));
-  test_expect_noexcept((void)test_random<vector<short>>(n));
-  test_expect_noexcept((void)test_random<vector<int>>(n));
-  test_expect_noexcept((void)test_random<vector<long>>(n));
-  test_expect_noexcept((void)test_random<vector<long long>>(n));
-  test_expect_noexcept((void)test_random<vector<float>>(n));
-  test_expect_noexcept((void)test_random<vector<double>>(n));
-  test_expect_noexcept((void)test_random<vector<long double>>(n));
-  test_expect_noexcept((void)test_random<vector<unsigned char>>(n));
-  test_expect_noexcept((void)test_random<vector<unsigned short>>(n));
-  test_expect_noexcept((void)test_random<vector<unsigned int>>(n));
-  test_expect_noexcept((void)test_random<vector<unsigned long>>(n));
-  test_expect_noexcept((void)test_random<vector<unsigned long long>>(n));
-}
-}
+    {
+      test_info("Random number generation: 0..max type compat checks ...");
+      constexpr auto max = 10;
+      test_expect(in_range(test_random<char>(max), 0, max));
+      test_expect(in_range(test_random<short>(max), 0, max));
+      test_expect(in_range(test_random<int>(max), 0, max));
+      test_expect(in_range(test_random<long>(max), 0, max));
+      test_expect(in_range(test_random<long long>(max), 0, max));
+      test_expect(in_range(test_random<float>(max), 0, max));
+      test_expect(in_range(test_random<double>(max), 0, max));
+      test_expect(in_range(test_random<long double>(max), 0, max));
+      test_expect(in_range(test_random<unsigned char>(max), 0, max));
+      test_expect(in_range(test_random<unsigned short>(max), 0, max));
+      test_expect(in_range(test_random<unsigned int>(max), 0, max));
+      test_expect(in_range(test_random<unsigned long>(max), 0, max));
+      test_expect(in_range(test_random<unsigned long long>(max), 0, max));
+    }
+    {
+      test_info("Random number generation: min..max type compat checks ...");
+      constexpr auto min = 5;
+      constexpr auto max = 10;
+      test_expect(in_range(test_random<char>(min, max), min, max));
+      test_expect(in_range(test_random<short>(min, max), min, max));
+      test_expect(in_range(test_random<int>(min, max), min, max));
+      test_expect(in_range(test_random<long>(min, max), min, max));
+      test_expect(in_range(test_random<long long>(min, max), min, max));
+      test_expect(in_range(test_random<float>(min, max), min, max));
+      test_expect(in_range(test_random<double>(min, max), min, max));
+      test_expect(in_range(test_random<long double>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned char>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned short>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned int>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned long>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned long long>(min, max), min, max));
+    }
+    {
+      test_info("Random number generation: min..max type compat checks ...");
+      constexpr auto min = 5;
+      constexpr auto max = 10;
+      test_expect(in_range(test_random<char>(min, max), min, max));
+      test_expect(in_range(test_random<short>(min, max), min, max));
+      test_expect(in_range(test_random<int>(min, max), min, max));
+      test_expect(in_range(test_random<long>(min, max), min, max));
+      test_expect(in_range(test_random<long long>(min, max), min, max));
+      test_expect(in_range(test_random<float>(min, max), min, max));
+      test_expect(in_range(test_random<double>(min, max), min, max));
+      test_expect(in_range(test_random<long double>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned char>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned short>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned int>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned long>(min, max), min, max));
+      test_expect(in_range(test_random<unsigned long long>(min, max), min, max));
+    }
+    {
+      test_info("Random number generation: Container min..max type compat checks ...");
+      constexpr size_t n = 20;
+      constexpr auto min = 5;
+      constexpr auto max = 10;
+      test_expect(all_in_range(test_random<vector<char>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<short>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<int>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<long>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<long long>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<float>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<double>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<long double>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<unsigned char>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<unsigned short>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<unsigned int>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<unsigned long>>(n, min, max), min, max));
+      test_expect(all_in_range(test_random<vector<unsigned long long>>(n, min, max), min, max));
+    }
+    {
+      test_info("Random number generation: Container min<type>..min<type> compat checks ...");
+      constexpr size_t n = 20;
+      test_expect_noexcept((void)test_random<vector<char>>(n));
+      test_expect_noexcept((void)test_random<vector<short>>(n));
+      test_expect_noexcept((void)test_random<vector<int>>(n));
+      test_expect_noexcept((void)test_random<vector<long>>(n));
+      test_expect_noexcept((void)test_random<vector<long long>>(n));
+      test_expect_noexcept((void)test_random<vector<float>>(n));
+      test_expect_noexcept((void)test_random<vector<double>>(n));
+      test_expect_noexcept((void)test_random<vector<long double>>(n));
+      test_expect_noexcept((void)test_random<vector<unsigned char>>(n));
+      test_expect_noexcept((void)test_random<vector<unsigned short>>(n));
+      test_expect_noexcept((void)test_random<vector<unsigned int>>(n));
+      test_expect_noexcept((void)test_random<vector<unsigned long>>(n));
+      test_expect_noexcept((void)test_random<vector<unsigned long long>>(n));
+    }
+  }
 
-// Sequences
-{
-  const auto seqv_long_1_100 = sequence_vector<long, 1>(100);
-  test_expect(seqv_long_1_100.size() == 1);
-  test_expect(seqv_long_1_100.front() == 100);
-  const auto seqv_int_10_0 = sequence_vector<int, 10>(0);
-  test_expect(seqv_int_10_0.size() == 10);
-  test_expect(seqv_int_10_0.front() == 0);
-  test_expect(seqv_int_10_0.back() == 9);
-  const auto seqv_double_2_42 = sequence_vector<double, 2>(42);
-  test_expect(seqv_double_2_42.size() == 2);
-  test_expect(seqv_double_2_42.front() == 42);
-  test_expect(seqv_double_2_42.back() == 43);
-  const auto seqa_long_1_100 = sequence_array<long, 1>(100);
-  test_expect(seqa_long_1_100.max_size() == 1);
-  test_expect(seqa_long_1_100.front() == 100);
-  const auto seqa_int_10_0 = sequence_array<int, 10>(0);
-  test_expect(seqa_int_10_0.max_size() == 10);
-  test_expect(seqa_int_10_0.front() == 0);
-  test_expect(seqa_int_10_0.back() == 9);
-  const auto seqa_double_2_42 = sequence_array<double, 2>(42);
-  test_expect(seqa_double_2_42.max_size() == 2);
-  test_expect(seqa_double_2_42.front() == 42);
-  test_expect(seqa_double_2_42.back() == 43);
-  test_expect(test_sequence_vector<char, 1>(' ').size() == 1);
-  test_expect(test_sequence_array<char, 10>('\0').size() == 10);
-}
+  // Sequences
+  {
+    const auto seqv_long_1_100 = sequence_vector<long, 1>(100);
+    test_expect(seqv_long_1_100.size() == 1);
+    test_expect(seqv_long_1_100.front() == 100);
+    const auto seqv_int_10_0 = sequence_vector<int, 10>(0);
+    test_expect(seqv_int_10_0.size() == 10);
+    test_expect(seqv_int_10_0.front() == 0);
+    test_expect(seqv_int_10_0.back() == 9);
+    const auto seqv_double_2_42 = sequence_vector<double, 2>(42);
+    test_expect(seqv_double_2_42.size() == 2);
+    test_expect(seqv_double_2_42.front() == 42);
+    test_expect(seqv_double_2_42.back() == 43);
+    const auto seqa_long_1_100 = sequence_array<long, 1>(100);
+    test_expect(seqa_long_1_100.max_size() == 1);
+    test_expect(seqa_long_1_100.front() == 100);
+    const auto seqa_int_10_0 = sequence_array<int, 10>(0);
+    test_expect(seqa_int_10_0.max_size() == 10);
+    test_expect(seqa_int_10_0.front() == 0);
+    test_expect(seqa_int_10_0.back() == 9);
+    const auto seqa_double_2_42 = sequence_array<double, 2>(42);
+    test_expect(seqa_double_2_42.max_size() == 2);
+    test_expect(seqa_double_2_42.front() == 42);
+    test_expect(seqa_double_2_42.back() == 43);
+    test_expect(test_sequence_vector<char, 1>(' ').size() == 1);
+    test_expect(test_sequence_array<char, 10>('\0').size() == 10);
+  }
 }

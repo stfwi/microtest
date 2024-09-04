@@ -17,7 +17,7 @@ bool test_basic_macros()
   unsigned num_ok = 0;
   const auto ok = [&num_ok](bool inc) {
     num_ok += inc ? 1 : 0;
-    if(!inc) test_note("!UNEXPECTED TESTENV RESULT!");
+    if(!inc) { test_note("!UNEXPECTED TESTENV RESULT!"); }
   };
 
   // Unconditional pass/fail/warn
@@ -96,7 +96,7 @@ bool test_relational_checks()
   unsigned num_ok = 0;
   const auto ok = [&num_ok](bool inc) {
     num_ok += inc ? 1 : 0;
-    if(!inc) test_warn("!UNEXPECTED TESTENV RESULT!");
+    if(!inc) { test_warn("!UNEXPECTED TESTENV RESULT!"); }
   };
 
   int int_one = 1;

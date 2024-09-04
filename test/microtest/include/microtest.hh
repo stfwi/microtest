@@ -461,7 +461,7 @@
  */
 #define test_expect_except(...) { \
   try { \
-    (__VA_ARGS__); \
+    (void)(__VA_ARGS__); \
     (::sw::utest::test::fail(__FILE__, __LINE__, #__VA_ARGS__, " | Exception was expected" )); \
   } catch(const std::exception& e) { \
     (::sw::utest::test::pass(__FILE__, __LINE__, std::string( \
@@ -481,7 +481,7 @@
  */
 #define test_expect_noexcept(...) { \
   try { \
-    ;(__VA_ARGS__); \
+    (void)(__VA_ARGS__); \
     (::sw::utest::test::pass(__FILE__, __LINE__, #__VA_ARGS__)); \
   } catch(const std::exception& e) { \
     (::sw::utest::test::fail(__FILE__, __LINE__, std::string( \

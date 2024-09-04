@@ -1,29 +1,20 @@
 ---
 #
 # @file .clang-format
-# @requires clang-format version >=14.0.0
+# @requires clang-format version >=17.0.0
 # @author sw
 #
 # c/c++ coding style auto formatting using clang-format.
 #
-# Does NOT cover the following aspects:
-#
-#  - Line ending must be manually checked for LF
-#  - File must end with empty line
-#  - Braces for control statements must be manually added,
-#    in case the statement is not in the same line.
-#  - Braces for `case` statements must be added, if multiple
-#    statements are in the case block (means all except `case 0: return 5;`)
-#
 #--
 Language: Cpp
-Standard: 'Cpp11' # Auto
+Standard: 'c++14'
 ColumnLimit: '120'
 TabWidth: '2'
 IndentWidth: '2'
 UseTab: Never
-# clang17 LineEnding: 'LF'
-# clang17 InsertNewlineAtEOF: 'true'
+LineEnding: 'LF'
+InsertNewlineAtEOF: 'true'
 AccessModifierOffset: '-2'
 ContinuationIndentWidth: '2'
 #--
@@ -75,10 +66,8 @@ BreakBeforeTernaryOperators: 'true'
 BreakBeforeBinaryOperators: 'NonAssignment'
 BreakBeforeConceptDeclarations: 'true' # clang17->'Allowed'
 BreakAfterJavaFieldAnnotations: 'true'
-#clang17 BreakAfterAttributes: 'Always'
-#clang17 BreakArrays: false
-BreakConstructorInitializers: AfterColon
-BreakInheritanceList: AfterColon
+BreakAfterAttributes: 'Always'
+BreakArrays: false
 BreakStringLiterals: 'true'
 BreakConstructorInitializers: 'AfterColon'
 BreakInheritanceList: 'AfterColon'
@@ -103,8 +92,7 @@ ReferenceAlignment: 'Left'
 DerivePointerAlignment: 'true'
 #--
 QualifierAlignment: 'Custom'
-#clang17 QualifierOrder: ['static', 'friend', 'inline', 'constexpr', 'const', 'volatile', 'restrict', 'type']
-QualifierOrder: ['static', 'inline', 'constexpr', 'const', 'volatile', 'type']
+QualifierOrder: ['static', 'friend', 'inline', 'constexpr', 'const', 'volatile', 'restrict', 'type']
 #--
 SortIncludes: 'false'
 SortUsingDeclarations: 'false'
@@ -138,12 +126,12 @@ IndentExternBlock: 'Indent'
 IndentGotoLabels: 'false' # who needs that?
 IndentRequires: 'true' # clang17 -> IndentRequiresClause: 'true'
 #--
-#clang17 InsertBraces: 'true' # enforce if {}
-#clang17 RemoveSemicolon: 'true' # remove unneeded ;, e.g. after closing function block.
+InsertBraces: 'true' # enforce if {}
+RemoveSemicolon: 'true' # remove unneeded ;, e.g. after closing function block.
 InsertTrailingCommas: 'Wrapped'
 LambdaBodyIndentation: 'Signature'
-#clang17 RequiresClausePosition: 'OwnLine'
-#clang17 RequiresExpressionIndentation: 'OuterScope'
+RequiresClausePosition: 'OwnLine'
+RequiresExpressionIndentation: 'OuterScope'
 SeparateDefinitionBlocks: 'Always'
 ShortNamespaceLines: '10'
 #--
