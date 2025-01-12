@@ -128,6 +128,9 @@ coverage-files: $(patsubst %/test.log,%/test.gcov,$(TEST_BINARIES_RESULTS))
 # Analysis of one test using gcov/lcov
 $(BUILDDIR)/test/%/test.gcov: $(BUILDDIR)/test/%/test.log
 	@echo "[gcov] $*"
+	@cp -f ./test/$*/*.cc $(dir $<)/
+	@cd $(dir $<) && [ ! -f test.elf-test.gcno ] || mv test.elf-test.gcno test.gcno
+	@cd $(dir $<) && [ ! -f test.elf-test.gcda ] || mv test.elf-test.gcda test.gcda
 	@cd $(dir $<) && gcov --source-prefix "$(CURDIR)" *.gcno > gcov.log 2>&1
 	@cd $(dir $<) && gcov -m *.cc >> gcov.log 2>&1
 	@[ ! -z "$(shell which lcov)" ] || echo "[warn] lcov is not installed."
@@ -138,8 +141,9 @@ $(BUILDDIR)/test/%/test.gcov: $(BUILDDIR)/test/%/test.log
 
 # Combined coverage all executed tests
 coverage-summary:
-	@echo "[lcov] Summary"
+	@echo "[lcov] Summary coverage:"
 	@cd $(LCOV_DATA_ROOT) && genhtml data/*.info --output-directory ./html >> lcov.log 2>&1
+	@cd $(LCOV_DATA_ROOT) && tail -n2 lcov.log | sed 's/^/\[lcov\] /'
 
 #---------------------------------------------------------------------------------------------------
 # Dump environment

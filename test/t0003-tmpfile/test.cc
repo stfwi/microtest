@@ -44,10 +44,12 @@ void test_tmpfile_handling()
   auto tmpfile1_path = string();
   {
     test_info("Constructing tmp_file in scope ...");
-    const auto tmpfile1 = test_make_tmpfile();
+    auto tmpfile1 = test_make_tmpfile();
     tmpfile1_path = tmpfile1.path();
     test_info("tmpfile1.path() = '", tmpfile1_path, "'");
     test_expect(isfile(tmpfile1_path));
+    const auto file1 = std::move(tmpfile1);
+    (void)file1;
   }
   test_info("Checking if tmp_file deleted after falling out of scope ...");
   test_expect(!isfile(tmpfile1_path));
@@ -59,10 +61,13 @@ void test_tmpdir_handling()
   auto dir_path = string();
   {
     test_info("Constructing tmp_file in scope ...");
-    const auto dir = test_make_tmpdir();
+    auto dir = test_make_tmpdir();
     dir_path = dir.path();
-    test_info("tmpfile1.path() = '", dir_path, "'");
+    test_info("dir.path() = '", dir_path, "'");
     test_expect(isdir(dir_path));
+    test_expect(!isfile(dir_path));
+    const auto dir1 = std::move(dir);
+    (void)dir1;
   }
   test_info("Checking if tmp_file deleted after falling out of scope ...");
   test_expect(!isdir(dir_path));
