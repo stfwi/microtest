@@ -766,6 +766,7 @@ namespace sw { namespace utest {
       static void ansi_colors(bool enable) noexcept
       {
         #ifdef WITH_MICROTEST_ANSI_COLORS_FORCED
+          (void)enable;
           ansi_colors_ = true;
         #else
           ansi_colors_ = enable;

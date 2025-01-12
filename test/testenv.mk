@@ -10,12 +10,14 @@
 #---------------------------------------------------------------------------------------------------
 MAKEFLAGS+= --no-print-directory
 MICROTEST_ROOT=./test/microtest/include
+PRINT_RESULTS=0
+WITH_ANSI_COLORS=0
 
 # Test selection
 wildcardr=$(foreach d,$(wildcard $1*),$(call wildcardr,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 TEST_SELECTION:=$(sort $(wildcard test/*$(TEST)*/))
-TEST_BINARIES_SOURCES:=$(foreach F, $(filter test/%/ , $(TEST_SELECTION)), $Ftest.cc)
+TEST_BINARIES_SOURCES:=$(wildcard $(foreach F, $(filter test/%/ , $(TEST_SELECTION)), $Ftest.cc))
 TEST_BINARIES:=$(patsubst %.cc,$(BUILDDIR)/%$(BINARY_EXTENSION),$(TEST_BINARIES_SOURCES))
 TEST_BINARIES_RESULTS:=$(patsubst %.cc,$(BUILDDIR)/%.log,$(TEST_BINARIES_SOURCES))
 
@@ -36,6 +38,10 @@ ifneq (,$(findstring clang++,$(CXX)))
  ifeq ($(WITH_SANITIZERS),1)
   TESTOPTS+=-g -fsanitize=address -fsanitize=memory -fsanitize=memory-track-origins -fsanitize=thread
  endif
+endif
+
+ifeq ($(WITH_ANSI_COLORS),1)
+ TESTOPTS+=-DWITH_MICROTEST_ANSI_COLORS_FORCED
 endif
 
 #---------------------------------------------------------------------------------------------------
